@@ -1,4 +1,5 @@
-﻿using BlueModas.Domain;
+﻿using AutoMapper;
+using BlueModas.Domain;
 using BlueModas.Domain.Repositories;
 using BlueModas.WebApi.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -15,14 +16,26 @@ namespace BlueModas.WebApi.Controllers
         private readonly IPedidoRepository _pedidoRepository;
         private readonly IProdutoRepository _produtoRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
         public CarrinhoController(IPedidoRepository pedidoRepository,
-                                  IProdutoRepository produtoRepository, 
-                                  IUnitOfWork unitOfWork)
+                                  IProdutoRepository produtoRepository,
+                                  IUnitOfWork unitOfWork, 
+                                  IMapper mapper)
         {
             _pedidoRepository = pedidoRepository;
             _produtoRepository = produtoRepository;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ObterCarrinho()
+        {
+            var pedido = await _pedidoRepository.ObterPorIdAsync(Guid.Parse("d7dd4a60-98dc-48cc-9e37-e3edfab91f97"));
+            var pedidoViewModel = _mapper.Map<Pedido, PedidoViewModel>(pedido);
+
+            return Ok(pedidoViewModel);
         }
 
         [HttpPost("adicionar-item")]

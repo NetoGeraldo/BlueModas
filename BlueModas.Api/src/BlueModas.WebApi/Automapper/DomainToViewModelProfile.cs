@@ -13,6 +13,11 @@ namespace BlueModas.WebApi.Automapper
         public DomainToViewModelProfile()
         {
             CreateMap<Produto, ProdutoViewModel>();
+
+            CreateMap<Pedido, PedidoViewModel>()
+                .ForMember(dest => dest.ItensPedidos, opt => opt.MapFrom(src => src.ItensPedido));
+
+            CreateMap<ItemPedido, ItemPedidoViewModel>();
         }
     }
 }
