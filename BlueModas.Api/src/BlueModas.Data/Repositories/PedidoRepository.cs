@@ -35,6 +35,12 @@ namespace BlueModas.Data.Repositories
                 .Include(p => p.ItensPedido)
                 .SingleOrDefaultAsync(p => p.Id == id);
         }
+        public async Task<Pedido> ObterPedidoEmRascunhoAsync()
+        {
+            return await _context.Pedidos
+                .Include(p => p.ItensPedido)
+                .SingleOrDefaultAsync(p => p.Status == EStatusPedido.Rascunho);
+        }
 
         public async Task AdicionarItemAsync(ItemPedido itemPedido)
         {

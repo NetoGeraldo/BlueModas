@@ -32,7 +32,7 @@ namespace BlueModas.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> ObterCarrinho()
         {
-            var pedido = await _pedidoRepository.ObterPorIdAsync(Guid.Parse("d7dd4a60-98dc-48cc-9e37-e3edfab91f97"));
+            var pedido = await _pedidoRepository.ObterPedidoEmRascunhoAsync();
             var pedidoViewModel = _mapper.Map<Pedido, PedidoViewModel>(pedido);
 
             return Ok(pedidoViewModel);
@@ -42,7 +42,7 @@ namespace BlueModas.WebApi.Controllers
         [Route("finalizar-pedido")]
         public async Task<IActionResult> FinalizarPedido()
         {
-            var pedido = await _pedidoRepository.ObterPorIdAsync(Guid.Parse("d7dd4a60-98dc-48cc-9e37-e3edfab91f97"));
+            var pedido = await _pedidoRepository.ObterPedidoEmRascunhoAsync();
 
             if (pedido is null)
             {
@@ -68,7 +68,7 @@ namespace BlueModas.WebApi.Controllers
         [HttpPost("adicionar-item")]
         public async Task<IActionResult> AdicionarItem(AdicionarItemProdutoViewModel viewModel)
         {
-            var pedido = await _pedidoRepository.ObterPorIdAsync(Guid.Parse("d7dd4a60-98dc-48cc-9e37-e3edfab91f97"));
+            var pedido = await _pedidoRepository.ObterPedidoEmRascunhoAsync();
             var produto = await _produtoRepository.ObterPorIdAsync(viewModel.ProdutoId);
 
             if (produto is null)
@@ -76,22 +76,33 @@ namespace BlueModas.WebApi.Controllers
                 return BadRequest("O produto não existe");
             }
 
-            var itemPedido = new ItemPedido(pedido.Id, produto.Id, produto.Nome, viewModel.Quantidade, produto.Preco);
+            var itemPedido = new ItemPedido(produto.Id, produto.Nome, viewModel.Quantidade, produto.Preco);
 
-            bool itemExistente = pedido.ItemPedidoExistente(itemPedido);
-
-            pedido.AdicionarItem(itemPedido);
-
-            if (itemExistente)
+            if (pedido is null)
             {
-                _pedidoRepository.AtualizarItem(pedido.ItensPedido.SingleOrDefault(p => p.ProdutoId == itemPedido.ProdutoId));
+                pedido = new Pedido();
+
+                pedido.AdicionarItem(itemPedido);
+
+                await _pedidoRepository.AdicionarAsync(pedido);
             }
             else
             {
-                await _pedidoRepository.AdicionarItemAsync(itemPedido);
-            }
+                bool itemExistente = pedido.ItemPedidoExistente(itemPedido);
 
-            _pedidoRepository.Atualizar(pedido);
+                pedido.AdicionarItem(itemPedido);
+
+                if (itemExistente)
+                {
+                    _pedidoRepository.AtualizarItem(pedido.ItensPedido.SingleOrDefault(p => p.ProdutoId == itemPedido.ProdutoId));
+                }
+                else
+                {
+                    await _pedidoRepository.AdicionarItemAsync(itemPedido);
+                }
+
+                _pedidoRepository.Atualizar(pedido);
+            }
 
             try
             {
@@ -108,7 +119,7 @@ namespace BlueModas.WebApi.Controllers
         [HttpPost("remover-item")]
         public async Task<IActionResult> RemoverItem(RemoverItemProdutoViewModel viewModel)
         {
-            var pedido = await _pedidoRepository.ObterPorIdAsync(Guid.Parse("d7dd4a60-98dc-48cc-9e37-e3edfab91f97"));
+            var pedido = await _pedidoRepository.ObterPedidoEmRascunhoAsync();
 
             var produto = await _produtoRepository.ObterPorIdAsync(viewModel.ProdutoId);
 

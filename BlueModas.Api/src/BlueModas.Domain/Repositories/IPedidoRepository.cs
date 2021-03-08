@@ -9,6 +9,7 @@ namespace BlueModas.Domain.Repositories
     public interface IPedidoRepository : IRepository<Pedido>
     {
         Task<Pedido> ObterPorIdAsync(Guid id);
+        Task<Pedido> ObterPedidoEmRascunhoAsync();
         Task AdicionarAsync(Pedido pedido);
         void Atualizar(Pedido pedido);
 

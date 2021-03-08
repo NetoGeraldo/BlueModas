@@ -29,6 +29,7 @@ namespace BlueModas.Domain
 
         public void AdicionarItem(ItemPedido itemPedido)
         {
+
             bool itemPedidoExiste = ItemPedidoExistente(itemPedido);
 
             if (itemPedidoExiste)
@@ -38,6 +39,8 @@ namespace BlueModas.Domain
             } 
             else
             {
+                itemPedido.AssociarPedido(this);
+
                 _itensPedido.Add(itemPedido);
             }
 

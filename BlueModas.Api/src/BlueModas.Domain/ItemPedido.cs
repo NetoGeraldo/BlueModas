@@ -12,13 +12,18 @@ namespace BlueModas.Domain
 
         public Pedido Pedido { get; set; }
 
-        public ItemPedido(Guid pedidoId, Guid produtoId, string nome, int quantidade, decimal valorUnitario)
+        public ItemPedido(Guid produtoId, string nome, int quantidade, decimal valorUnitario)
         {
-            PedidoId = pedidoId;
             ProdutoId = produtoId;
             Nome = nome;
             Quantidade = quantidade;
             ValorUnitario = valorUnitario;
+        }
+
+        public void AssociarPedido(Pedido pedido)
+        {
+            Pedido = pedido;
+            PedidoId = pedido.Id;
         }
 
         public void AdicionarUnidades(int quantidade)
