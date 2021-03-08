@@ -12,10 +12,19 @@ namespace BlueModas.Domain
 
         public decimal ValorTotal { get; private set; }
         public IReadOnlyCollection<ItemPedido> ItensPedido => _itensPedido;
+        public EStatusPedido Status { get; private set; }
+        public DateTime DataFinalizacao { get; private set; }
 
         public Pedido()
         {
             _itensPedido = new List<ItemPedido>();
+            Status = EStatusPedido.Rascunho;
+        }
+
+        public void FinalizarPedido()
+        {
+            DataFinalizacao = DateTime.Now;
+            Status = EStatusPedido.Finalizado;
         }
 
         public void AdicionarItem(ItemPedido itemPedido)

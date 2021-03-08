@@ -1,4 +1,5 @@
-﻿using BlueModas.Domain;
+﻿using BlueModas.Data.Converters;
+using BlueModas.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -21,6 +22,16 @@ namespace BlueModas.Data.Mapping
                 .HasColumnName("valor_total")
                 .HasPrecision(12, 2)
                 .IsRequired();
+
+            builder.Property(p => p.Status)
+                .HasColumnName("status")
+                .HasColumnType("char")
+                .HasConversion(new EnumToCharConverter<EStatusPedido>())
+                .HasDefaultValue(EStatusPedido.Rascunho)
+                .IsRequired();
+
+            builder.Property(p => p.DataFinalizacao)
+                .HasColumnName("data_finalizacao");
 
             builder.HasMany(p => p.ItensPedido)
                 .WithOne(ip => ip.Pedido)

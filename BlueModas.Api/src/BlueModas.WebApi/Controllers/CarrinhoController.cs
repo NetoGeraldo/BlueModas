@@ -38,6 +38,33 @@ namespace BlueModas.WebApi.Controllers
             return Ok(pedidoViewModel);
         }
 
+        [HttpPost]
+        [Route("finalizar-pedido")]
+        public async Task<IActionResult> FinalizarPedido()
+        {
+            var pedido = await _pedidoRepository.ObterPorIdAsync(Guid.Parse("d7dd4a60-98dc-48cc-9e37-e3edfab91f97"));
+
+            if (pedido is null)
+            {
+                return BadRequest("Pedido não encontrado");
+            }
+
+            pedido.FinalizarPedido();
+
+            _pedidoRepository.Atualizar(pedido);
+
+            try
+            {
+                await _unitOfWork.CommitAsync();
+            }
+            catch (Exception)
+            {
+                return BadRequest("Ocorreu um erro ao finalizar o produto");
+            }
+
+            return Ok();
+        }
+
         [HttpPost("adicionar-item")]
         public async Task<IActionResult> AdicionarItem(AdicionarItemProdutoViewModel viewModel)
         {
