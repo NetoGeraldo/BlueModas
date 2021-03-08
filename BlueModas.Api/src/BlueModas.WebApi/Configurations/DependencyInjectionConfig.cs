@@ -1,4 +1,6 @@
-﻿using BlueModas.Data.Repositories;
+﻿using BlueModas.Data;
+using BlueModas.Data.Repositories;
+using BlueModas.Domain;
 using BlueModas.Domain.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -14,6 +16,9 @@ namespace BlueModas.WebApi.Configurations
         {
             // repositories
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
+            services.AddScoped<IPedidoRepository, PedidoRepository>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
             return services;
