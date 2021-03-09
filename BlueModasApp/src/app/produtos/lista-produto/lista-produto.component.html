@@ -1,0 +1,20 @@
+<div class="container main-container">
+    <div class="row text-center">
+        <div *ngFor="let produto of produtos" class="col-md-4">
+            <div class="card h-1000">
+                <picture>
+                    <img [src]="produto.imagem"/>
+                </picture>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">{{produto.nome | titlecase}}</h4>
+                <div>
+                    <h3>{{ produto.preco | currency:'BRL':'symbol':'1.2-2':'pt' }}</h3>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button (click)="adicionarAoCarrinho(produto)" class="btn btn-primary">Comprar</button>
+            </div>
+        </div>
+    </div>
+</div>
