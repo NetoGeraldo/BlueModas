@@ -35,7 +35,7 @@ namespace BlueModas.Domain
             if (itemPedidoExiste)
             {
                 var itemExistente = _itensPedido.SingleOrDefault(ip => ip.ProdutoId == itemPedido.ProdutoId);
-                itemExistente.AtualizarUnidades(itemPedido.Quantidade);
+                itemExistente.AdicionarUnidades(itemPedido.Quantidade);
             } 
             else
             {
