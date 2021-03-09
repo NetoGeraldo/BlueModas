@@ -39,6 +39,17 @@ namespace BlueModas.WebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BlueModas.WebApi", Version = "v1" });
             });
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy( 
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -54,10 +65,12 @@ namespace BlueModas.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlueModas.WebApi v1"));
             }
-
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
