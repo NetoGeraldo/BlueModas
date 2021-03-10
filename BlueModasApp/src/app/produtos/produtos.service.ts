@@ -17,7 +17,6 @@ export class ProdutosService {
   }
 
   adicionarAoCarrinho(produto: Produto) {
-
     return this.http.post(this.url + '/carrinho/adicionar-item', 
     {
       produtoId: produto.id,

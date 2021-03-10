@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Pedido } from './pedido';
 import { PedidoService } from './pedido.service';
 
@@ -11,10 +12,13 @@ export class PedidoComponent implements OnInit {
 
   pedido: Pedido;
 
-  constructor(private pedidoService: PedidoService) { }
+  constructor(private pedidoService: PedidoService,
+              private route: ActivatedRoute  ) { }
 
   ngOnInit(): void {
-    this.pedidoService.obterPedido('c844ffe5-81e5-469e-988b-332a43cd6086').subscribe(
+    const pedidoId = this.route.snapshot.paramMap.get('id');
+
+    this.pedidoService.obterPedido(pedidoId).subscribe(
       pedido => { this.pedido = pedido; },
       error => console.log(error),
     )
