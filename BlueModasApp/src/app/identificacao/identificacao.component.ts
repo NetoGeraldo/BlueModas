@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CarrinhoService } from '../carrinho/carrinho.service';
+import { Produto } from '../produtos/produto';
+import { SharedService } from '../shared.service';
 import { Identificacao } from './identificacao';
 
 @Component({
@@ -19,7 +21,9 @@ export class IdentificacaoComponent {
 
   constructor(private fb: FormBuilder,
               private carrinhoService: CarrinhoService,
-              private router: Router)   { 
+              private router: Router,
+              private sharedService: SharedService) {
+
     this.form = this.fb.group({
       nome: ['', Validators.compose([
         Validators.minLength(3),
@@ -31,6 +35,7 @@ export class IdentificacaoComponent {
       ])],
       telefone: ['', Validators.required]
     });
+
   }
 
   finalizarCompra() {
@@ -40,6 +45,7 @@ export class IdentificacaoComponent {
 
     this.carrinhoService.finalizarCompra(identificacao).subscribe(
       ok => {
+        this.sharedService.produtoAdicionadoEvent(new Produto());
         this.router.navigate([`/pedidos/${ok.pedidoId}`]);
       },
       error => console.log('ocorreu um erro ao realizar a compra'),

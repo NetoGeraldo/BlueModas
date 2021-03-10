@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Produto } from '../produtos/produto';
+import { SharedService } from '../shared.service';
 import { Carrinho, Item } from './carrinho';
 import { CarrinhoService } from './carrinho.service';
 
@@ -12,20 +14,42 @@ export class CarrinhoComponent implements OnInit {
 
   carrinho: Carrinho;
 
-  constructor(private carrinhoService: CarrinhoService) { 
+  constructor(private carrinhoService: CarrinhoService,
+              private sharedService: SharedService) { 
 
   }
 
   subtrairUnidades(item: Item) {
-    item.quantidade--;
+    this.carrinhoService.removerUnidade(item.produtoId)
+    .subscribe(
+      carrinho => {
+        this.obterDetalhesCarrinho();
+        this.sharedService.produtoAdicionadoEvent(new Produto());
+      },
+      error => console.log(error),
+    );    
   }
 
   adicionarUnidades(item: Item) {
-    item.quantidade++;
+    this.carrinhoService.adicionarUnidade(item.produtoId)
+    .subscribe(
+      carrinho => {
+        this.obterDetalhesCarrinho();
+        this.sharedService.produtoAdicionadoEvent(new Produto());
+      },
+      error => console.log(error),
+    );
   }
 
   removerItem(item: Item) {
-    
+    this.carrinhoService.removerDoCarrinho(item.produtoId)
+    .subscribe(
+      carrinho => {
+        this.obterDetalhesCarrinho();
+        this.sharedService.produtoAdicionadoEvent(new Produto());
+      },
+      error => console.log(error),
+    );
   }
 
   ngOnInit(): void {
