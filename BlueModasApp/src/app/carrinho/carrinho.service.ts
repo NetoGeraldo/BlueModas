@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Identificacao } from '../identificacao/identificacao';
 import { Carrinho } from './carrinho';
 
 @Injectable({
@@ -16,5 +17,13 @@ export class CarrinhoService {
 
   obterDetalhesCarrinho() : Observable<Carrinho> {
     return this.http.get<Carrinho>(this.url + '/carrinho');
+  }
+
+  finalizarCompra(finalizarCompraViewModel: Identificacao) : Observable<any> {
+    return this.http.post(this.url + '/carrinho/finalizar-pedido', {
+      nome: finalizarCompraViewModel.nome,
+      email: finalizarCompraViewModel.email,
+      telefone: finalizarCompraViewModel.telefone
+    });
   }
 }
