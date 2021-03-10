@@ -1,0 +1,63 @@
+<div class="container main-container">
+    <div class="row">
+        <div class="col-8">
+            <div *ngFor="let item of carrinho.itensPedidos" class="mb-4">
+                <div class="card">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-header">
+                                <div class="card-title">{{item.nome}}</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <picture>
+                                            <img src="https://via.placeholder.com/150" />
+                                        </picture>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="row gx-1">
+                                            <div class="col px-0 mx-0">
+                                                <button (click)="adicionarUnidades(item)" class="btn btn-primary"><i class="fas fa-plus"></i></button>
+                                            </div>
+                                            <div class="col px-0 mx-0">
+                                                <input class="form-control mx-0 px-0" disabled value="{{item.quantidade}}">
+                                            </div>
+                                            <div class="col">
+                                                <button (click)="subtrairUnidades(item)" class="btn btn-primary"><i class="fas fa-minus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="row align-itens-center">
+                                            <a class="text-danger" (click)="removerItem(item)" href="#">Remover item</a>
+
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <h5>Total do item</h5>
+                                        <div class="small">{{item.valorUnitario | currency:'BRL':'symbol':'1.2-2':'pt'}}
+                                            x
+                                            {{item.quantidade}}</div>
+                                        <div class="fw-bold">{{item.valorUnitario * item.quantidade |
+                                            currency:'BRL':'symbol':'1.2-2':'pt'}}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+            <div class="col">
+                <div class="">
+                    <div class="row align-content-right">
+                        <div class="col">
+                            <h3>Total: {{carrinho.valorTotal | currency:'BRL':'symbol':'1.2-2':'pt'}}</h3>
+                            <a class="btn btn-primary" [routerLink]="['/identificacao']">Finalizar a compra</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
