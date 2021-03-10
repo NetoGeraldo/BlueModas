@@ -2,11 +2,6 @@
 using BlueModas.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlueModas.Data.Mapping
 {
@@ -32,6 +27,15 @@ namespace BlueModas.Data.Mapping
 
             builder.Property(p => p.DataFinalizacao)
                 .HasColumnName("data_finalizacao");
+
+            builder.Property(p => p.ClienteId)
+                .HasColumnName("id_cliente")
+                .IsRequired(false);
+
+            builder.HasOne(p => p.Cliente)
+                .WithMany(c => c.Pedidos)
+                .HasForeignKey(p => p.ClienteId)
+                .IsRequired(false);
 
             builder.HasMany(p => p.ItensPedido)
                 .WithOne(ip => ip.Pedido)

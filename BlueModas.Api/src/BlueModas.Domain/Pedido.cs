@@ -15,14 +15,20 @@ namespace BlueModas.Domain
         public EStatusPedido Status { get; private set; }
         public DateTime DataFinalizacao { get; private set; }
 
+        public Guid? ClienteId { get; set; }
+        public Cliente Cliente { get; set; }
+
         public Pedido()
         {
             _itensPedido = new List<ItemPedido>();
             Status = EStatusPedido.Rascunho;
         }
 
-        public void FinalizarPedido()
+        public void FinalizarPedido(Cliente cliente)
         {
+            Cliente = cliente;
+            ClienteId = cliente.Id;
+
             DataFinalizacao = DateTime.Now;
             Status = EStatusPedido.Finalizado;
         }

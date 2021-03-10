@@ -4,6 +4,7 @@ using BlueModas.Domain.Repositories;
 using BlueModas.WebApi.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,18 +16,21 @@ namespace BlueModas.WebApi.Controllers
     {
         private readonly IPedidoRepository _pedidoRepository;
         private readonly IProdutoRepository _produtoRepository;
+        private readonly IClienteRepository _clienteRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
         public CarrinhoController(IPedidoRepository pedidoRepository,
                                   IProdutoRepository produtoRepository,
-                                  IUnitOfWork unitOfWork, 
-                                  IMapper mapper)
+                                  IUnitOfWork unitOfWork,
+                                  IMapper mapper, 
+                                  IClienteRepository clienteRepository)
         {
             _pedidoRepository = pedidoRepository;
             _produtoRepository = produtoRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _clienteRepository = clienteRepository;
         }
 
         [HttpGet]
@@ -40,16 +44,24 @@ namespace BlueModas.WebApi.Controllers
 
         [HttpPost]
         [Route("finalizar-pedido")]
-        public async Task<IActionResult> FinalizarPedido()
+        public async Task<IActionResult> FinalizarPedido(ClienteViewModel viewModel)
         {
             var pedido = await _pedidoRepository.ObterPedidoEmRascunhoAsync();
+            var cliente = await _clienteRepository.ObterPorEmailAsync(viewModel.Email);
+
+            if (cliente is null)
+            {
+                cliente = new Cliente(viewModel.Nome, viewModel.Email, viewModel.Telefone);
+
+                await _clienteRepository.AdicionarAsync(cliente);
+            }
 
             if (pedido is null)
             {
                 return BadRequest("Pedido não encontrado");
             }
 
-            pedido.FinalizarPedido();
+            pedido.FinalizarPedido(cliente);
 
             _pedidoRepository.Atualizar(pedido);
 
@@ -62,7 +74,17 @@ namespace BlueModas.WebApi.Controllers
                 return BadRequest("Ocorreu um erro ao finalizar o produto");
             }
 
-            return Ok();
+            var pedidoFinalizadoViewModel = new PedidoFinalizadoViewModel
+            {
+                NumeroPedido = pedido.Id.ToString(),
+                Email = cliente.Email,
+                Nome = cliente.Nome,
+                Telefone = cliente.Telefone,
+                ItensPedidos = _mapper.Map<List<ItemPedido>, List<ItemPedidoViewModel>>(pedido.ItensPedido.ToList()),
+                ValorTotal = pedido.ValorTotal,
+            };
+
+            return Ok(pedidoFinalizadoViewModel);
         }
 
         [HttpPost("adicionar-item")]

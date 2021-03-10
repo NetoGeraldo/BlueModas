@@ -17,6 +17,8 @@ namespace BlueModas.WebApi.Configurations
             // repositories
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped<IPedidoRepository, PedidoRepository>();
+            services.AddScoped<IClienteRepository, ClienteRepository>();
+
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
