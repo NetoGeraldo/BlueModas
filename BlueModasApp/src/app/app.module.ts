@@ -17,6 +17,7 @@ import { IconeCarrinhoComponent } from './icone-carrinho/icone-carrinho.componen
 import { ProdutosService } from './produtos/produtos.service';
 import { ListaProdutoComponent } from './produtos/lista-produto/lista-produto.component';
 import { HttpClientModule } from '@angular/common/http';
+import { SharedService } from './shared.service';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   providers: [
     ProdutosService,
+    SharedService,
     {provide: APP_BASE_HREF, useValue: '/'}
   ],
   bootstrap: [AppComponent]

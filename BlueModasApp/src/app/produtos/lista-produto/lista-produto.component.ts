@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SharedService } from 'src/app/shared.service';
 import { Produto } from '../produto';
 import { ProdutosService } from '../produtos.service';
 
@@ -9,7 +10,8 @@ import { ProdutosService } from '../produtos.service';
 })
 export class ListaProdutoComponent implements OnInit {
 
-  constructor(private ProdutosService: ProdutosService) { }
+  constructor(private ProdutosService: ProdutosService,
+              private sharedService: SharedService) { }
 
   public produtos: Produto[];
 
@@ -28,6 +30,7 @@ export class ListaProdutoComponent implements OnInit {
     this.ProdutosService.adicionarAoCarrinho(produto)
       .subscribe(
         ok => {
+          this.sharedService.produtoAdicionadoEvent(produto);
           console.log('alterar a quantidade do carrinho');
         },
         error => console.log(error)
