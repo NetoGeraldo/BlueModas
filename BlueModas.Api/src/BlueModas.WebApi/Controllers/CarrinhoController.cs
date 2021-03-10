@@ -74,17 +74,10 @@ namespace BlueModas.WebApi.Controllers
                 return BadRequest("Ocorreu um erro ao finalizar o produto");
             }
 
-            var pedidoFinalizadoViewModel = new PedidoFinalizadoViewModel
-            {
-                NumeroPedido = pedido.Id.ToString(),
-                Email = cliente.Email,
-                Nome = cliente.Nome,
-                Telefone = cliente.Telefone,
-                ItensPedidos = _mapper.Map<List<ItemPedido>, List<ItemPedidoViewModel>>(pedido.ItensPedido.ToList()),
-                ValorTotal = pedido.ValorTotal,
-            };
-
-            return Ok(pedidoFinalizadoViewModel);
+            return Ok(new
+                {
+                    PedidoId = pedido.Id.ToString()
+                });
         }
 
         [HttpPost("adicionar-item")]
