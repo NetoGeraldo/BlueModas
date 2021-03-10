@@ -18,6 +18,8 @@ import { ProdutosService } from './produtos/produtos.service';
 import { ListaProdutoComponent } from './produtos/lista-produto/lista-produto.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedService } from './shared.service';
+import { IdentificacaoComponent } from './identificacao/identificacao.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -28,10 +30,12 @@ import { SharedService } from './shared.service';
     CarrinhoComponent,
     IconeCarrinhoComponent,
     ListaProdutoComponent,
+    IdentificacaoComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    ReactiveFormsModule,
     [RouterModule.forRoot(rootRouterConfig, { useHash: false})]
   ],
   providers: [

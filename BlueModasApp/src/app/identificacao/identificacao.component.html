@@ -1,0 +1,34 @@
+<div class="container main-container">
+    <div class="d-flex align-items-center justify-content-center ">
+
+        <div class="col-5 ">
+            <h2 class="text-center">
+                Falta pouco para terminar sua compra!
+            </h2>
+            <div class="card shadow my-3">
+                <span class="small text-center mt-4 mb-3">Preencha as informações abaixo</span>
+                <div class="card-body">
+
+                    <form [formGroup]="form">
+                        <div class=" mb-3">
+                            <label class="form-label">Nome</label>
+                            <input [ngClass]="{'is-invalid': (form.controls.nome.invalid && !form.controls.nome.pristine)}" class="form-control is-invalid" placeholder="Nome" formControlName="nome">
+                            <div class="invalid-feedback">Insira um nome válido</div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">E-mail</label>
+                            <input [ngClass]="{'is-invalid': (form.controls.email.invalid && !form.controls.email.pristine)}" class="form-control" placeholder="Digite seu e-mail aqui" formControlName="email">
+                            <div class="invalid-feedback">Insira um email válido</div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Telefone</label>
+                            <input  [ngClass]="{'is-invalid': (form.controls.telefone.invalid && !form.controls.telefone.pristine)}" class="form-control" placeholder="Digite seu telefone aqui" formControlName="telefone">
+                            <div class="invalid-feedback">Insira um telefone válido</div>
+                        </div>
+                        <button class="btn btn-primary" [disabled]="!form.valid" >Finalizar compra</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
