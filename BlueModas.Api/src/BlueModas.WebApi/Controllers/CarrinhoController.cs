@@ -12,7 +12,7 @@ namespace BlueModas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CarrinhoController : ControllerBase
+    public class CarrinhoController : MainController
     {
         private readonly IPedidoRepository _pedidoRepository;
         private readonly IProdutoRepository _produtoRepository;
