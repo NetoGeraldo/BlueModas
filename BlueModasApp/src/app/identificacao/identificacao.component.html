@@ -25,7 +25,7 @@
                             <input  [ngClass]="{'is-invalid': (form.controls.telefone.invalid && !form.controls.telefone.pristine)}" class="form-control" placeholder="Digite seu telefone aqui" formControlName="telefone">
                             <div class="invalid-feedback">Insira um telefone válido</div>
                         </div>
-                        <button class="btn btn-primary" [disabled]="!form.valid" >Finalizar compra</button>
+                        <button (click)="finalizarCompra()" class="btn btn-primary" [disabled]="!form.valid" >Finalizar compra</button>
                     </form>
                 </div>
             </div>

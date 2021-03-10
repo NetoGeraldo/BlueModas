@@ -20,6 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SharedService } from './shared.service';
 import { IdentificacaoComponent } from './identificacao/identificacao.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { PedidoComponent } from './pedido/pedido.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     IconeCarrinhoComponent,
     ListaProdutoComponent,
     IdentificacaoComponent,
+    PedidoComponent,
   ],
   imports: [
     BrowserModule,

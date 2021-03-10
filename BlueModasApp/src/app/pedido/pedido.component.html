@@ -1,0 +1,35 @@
+<div class="container main-container">
+    <div class="card">
+        <div class="card-header">
+            <div class="row align-itens-between">
+                <div class="col">
+                    Pedido {{pedido.numeroPedido}}
+                </div>
+                <div class="col">
+                    Total: {{pedido.valorTotal | currency:'BRL':'symbol':'1.2-2':'pt'}}
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Nome</dt>
+                <dd class="col-sm-9">{{pedido.nome}}</dd>
+
+                <dt class="col-sm-3">E-mail</dt>
+                <dd class="col-sm-9">{{pedido.email}}</dd>
+
+                <dt class="col-sm-3">Telefone</dt>
+                <dd class="col-sm-9">{{pedido.telefone}}</dd>
+
+                <dt class="col-sm-3">Itens</dt>
+                <dd class="col-sm-9">
+                    <dl *ngFor="let produto of pedido.itensPedidos" class="row">
+                        <dt class="col-sm-4 fw-normal">{{produto.nome}} x{{produto.quantidade}}</dt>
+                        <dd class="col-sm-8">{{produto.valorUnitario * produto.quantidade |
+                            currency:'BRL':'symbol':'1.2-2':'pt'}}</dd>
+                    </dl>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
